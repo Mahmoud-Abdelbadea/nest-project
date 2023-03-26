@@ -1,32 +1,36 @@
 import {Column,Entity,PrimaryGeneratedColumn,AfterInsert,AfterRemove,AfterUpdate,OneToMany,OneToOne, JoinColumn} from 'typeorm'
+import { IsString,IsNotEmpty,IsEmail,MinLength } from 'class-validator'
 import {Profile} from './profile'
-import {Post} from './post'
+import {Posts} from './post'
 @Entity()
 export class User{
     @PrimaryGeneratedColumn()
     id:number
     
     @Column({unique:true})
+    @IsNotEmpty()
+    @IsString()
+    @IsEmail()
     email:string
     @Column()
+    @IsNotEmpty()
+    @IsString()
+    @MinLength(8)
     password:string
-    @Column()
-    createAt:Date
-    @OneToOne(()=>Profile)
+   @OneToOne(()=>Profile,(profile)=>profile.user)
     @JoinColumn()
     profile:Profile
-    @OneToMany(()=>Post,(post)=>post.user)
-    post:Post[]
+
   
    /* @Column()
     confirmPassword:string*/
     @AfterInsert()
-    logInsert(){
-        console.log('insert')
+    BeforeInsert(){
+        this.email=this.email.toLowerCase()
     }
-    @AfterUpdate()
+   @AfterUpdate()
     logUpdate(){
-        console.log('update')
+        this.email=this.email.toLowerCase()
     }
     @AfterRemove()
     logRomove(){

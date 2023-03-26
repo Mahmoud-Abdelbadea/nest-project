@@ -1,24 +1,27 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from './entities/user'
-import { UsersController } from './users/controllers/users.controller';
-import { UsersService } from './users/services/users.service';
-import { AuthService } from './users/auth.service';
-import { Profile } from './entities/profile';
-import { Post } from './entities/post';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { PostsModule } from './posts/posts.module';
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'mysql',
-    database: 'posts',
-    username: 'root',
-    host: 'localhost',
-    password: '123456',
-    port: 3306,
-    entities: [User, Profile, Post],
-    synchronize: true
-  }), UsersModule]
+  imports: [ConfigModule.forRoot({isGlobal:true}),TypeOrmModule.forRootAsync({
+    inject:[ConfigService],
+    useFactory:(config:ConfigService)=>{
+      return {
+        type:'mysql',
+        database:config.get<string>('DATABASE_NAME'),
+        username:config.get<string>('USER_NAME'),
+        password:config.get<string>('PASSWORD'),
+        host:config.get<string>('HOST'),
+        port:config.get<number>('PORT_DB'),
+        autoLoadEntities: true,
+        synchronize: true
 
+      }}
+    }),UsersModule, ProfilesModule, PostsModule]
+  
 })
+
+
 export class AppModule { }
