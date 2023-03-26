@@ -17,6 +17,6 @@ export class Profile{
     @IsString()
     @IsNotEmpty()
     dob:string
-    @OneToOne(()=>User,(user)=>user.profile,{cascade:true})
+    @OneToOne(()=>User,(user)=>user.profile)
     user:User
 }
