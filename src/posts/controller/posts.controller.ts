@@ -5,6 +5,8 @@ import { CreatePostDto } from '../dtos/createPost.dto';
 import { UpdatePostDto } from '../dtos/updatePost.dto';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { QueryPostDto }  from '../dtos/queryPost.dto'
+
 @UseGuards(AuthGuard())
 @Controller('posts')
 export class PostsController {
@@ -20,8 +22,10 @@ export class PostsController {
         return this.postsService.findById(id)
     }
     @Get()
-    findposts():Promise<Posts[]>{
-        return this.postsService.findposts()
+    findposts(@Query() query:QueryPostDto){
+        console.log(query)
+        
+        return this.postsService.findposts(query.limit,query.page)
     }
   
     @Patch('/:id')

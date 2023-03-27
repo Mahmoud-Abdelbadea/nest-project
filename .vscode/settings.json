@@ -1,6 +1,5 @@
 {
-    "conventionalCommits.scopes": [
-        "base_proj",
-        "add module"
-    ]
+  "conventionalCommits.scopes": ["base_proj", "add module"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false
 }

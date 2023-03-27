@@ -1,5 +1,5 @@
 import { IsString,IsNotEmpty,IsArray,ValidateNested,ArrayMinSize,ArrayMaxSize,IsNumber, IsObject, IsOptional}from "class-validator";
-import {Type} from 'class-transformer'
+import { Type } from 'class-transformer'
 /*class Item{
     @IsString()
     name:string
